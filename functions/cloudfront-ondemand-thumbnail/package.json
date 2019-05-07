@@ -1,0 +1,15 @@
+{
+  "name": "sjy-common-thumbnail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "heart@sirjuseyo.com",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "aws-sdk": "^2.448.0",
+    "sharp": "^0.22.1"
+  }
+}
