@@ -1,13 +1,9 @@
-'use strict'
-const url = require('url')
-const https = require('https')
+'use strict';
+const url = require('url');
+const https = require('https');
 
-/**
- * Envs
- * - SLACK_CHANNEL
- * - SLACK_HOOK_URL
- */
 exports.handler = (event, context, callback) => {
+  console.log(JSON.stringify(event))
   let payload = {
     channel: process.env.SLACK_CHANNEL,
     fields: [
@@ -17,20 +13,27 @@ exports.handler = (event, context, callback) => {
   			short: false,
   		}
   	]
-  }
+  };
   
   if ('aws.codepipeline' == event.source) {
     payload.color = 'SUCCEEDED' == event.detail.state ? 'good' : 'danger'
+  } else if ('aws.codebuild' == event.source) {
+    payload.fields[0].value = '```' + JSON.stringify({
+      project: event.detail['project-name'],
+      state: event.detail['build-status'],
+      version: event.detail['additional-information']['source-version']
+    }, null, 2) + '```'
+    payload.color = 'SUCCEEDED' == event.detail['build-status'] ? 'good' : 'danger'
   }
   
-  payload = JSON.stringify(payload)
+  payload = JSON.stringify(payload);
 
-  const options = url.parse(process.env.SLACK_HOOK_URL)
-  options.method = 'POST'
+  const options = url.parse(process.env.SLACK_HOOK_URL);
+  options.method = 'POST';
   options.headers = {
       'Content-Type': 'application/json',
-      'Content-Length': payload.length,
-  }
+      'Content-Length': Buffer.byteLength(payload),
+  };
 
   const req = https.request(options, res => {
     console.log({
@@ -40,9 +43,8 @@ exports.handler = (event, context, callback) => {
   })
 
   req.on('error', (e) => {
-    console.error(e)
-  })
-  
-  req.write(payload)
-  req.end()
+    console.error(e);
+  });
+  req.write(payload);
+  req.end();
 };
