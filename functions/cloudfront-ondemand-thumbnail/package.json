@@ -9,7 +9,7 @@
   "author": "heart@sirjuseyo.com",
   "license": "UNLICENSED",
   "dependencies": {
-    "aws-sdk": "^2.448.0",
+    "aws-sdk": "^2.814.0",
     "sharp": "^0.22.1"
   }
 }
