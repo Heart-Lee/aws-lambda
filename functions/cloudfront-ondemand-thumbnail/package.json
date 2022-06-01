@@ -10,6 +10,6 @@
   "license": "UNLICENSED",
   "dependencies": {
     "aws-sdk": "^2.448.0",
-    "sharp": "^0.22.1"
+    "sharp": "^0.30.5"
   }
 }
